@@ -27,20 +27,19 @@ keyCnt = 0
 for keyLine in sys.stdin.readlines():
     keyLine = keyLine.strip()
     if state == stSpam:
-        if state == stSpam:
-            if keyLine in keyMagic:
-                keyMagicTail = keyMagic[keyLine]
-                keyLines = []
-                state = stHam
-                continue
+        if keyLine in keyMagic:
+            keyMagicTail = keyMagic[keyLine]
+            keyLines = []
+            state = stHam
+            continue
     if state == stHam:
         if keyLine in keyMagicTail:
             asn1Spec = keyMagicTail[keyLine]
             state = stDump
         else:
-            keyLines.append(keyLine)
+            keyLines.append(keyLine.encode())
     if state == stDump:
-        substrate = ''
+        substrate = ''.encode()
         try:
             for keyLine in keyLines:
                 substrate = substrate + base64.decodestring(keyLine)
