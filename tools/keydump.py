@@ -1,7 +1,7 @@
 # Read unencrypted PKCS#1/PKIX-compliant, PEM&DER encoded private keys on
 # stdin, print them pretty and encode back into original wire format.
 # Private keys can be generated with "openssl genrsa|gendsa" commands.
-import sys, string, base64
+import sys, base64
 from pyasn1_modules import rfc2313
 from pyasn1.codec.der import encoder, decoder
 
@@ -25,7 +25,7 @@ state = stSpam
 keyCnt = 0
 
 for keyLine in sys.stdin.readlines():
-    keyLine = string.strip(keyLine)
+    keyLine = keyLine.strip()
     if state == stSpam:
         if state == stSpam:
             if keyLine in keyMagic:
@@ -45,7 +45,7 @@ for keyLine in sys.stdin.readlines():
             for keyLine in keyLines:
                 substrate = substrate + base64.decodestring(keyLine)
         except TypeError:
-            print('%s, possibly encrypted key' % (sys.exc_info[1], ))
+            print('%s, possibly encrypted key' % (sys.exc_info()[1], ))
             state = stSpam
             continue
 
