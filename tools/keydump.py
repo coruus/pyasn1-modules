@@ -15,9 +15,9 @@ keyMagic = {
 # Read PEM keys from stdin and print them out in plain text
 
 if len(sys.argv) != 1:
-    print """Usage:
+    print("""Usage:
 $ openssl genrsa -out /tmp/myprivatekey.pem
-$ cat /tmp/myprivatekey.pem | %s""" % sys.argv[0]
+$ cat /tmp/myprivatekey.pem | %s""" % sys.argv[0])
     sys.exit(-1)
                                 
 stSpam, stHam, stDump = 0, 1, 2
@@ -45,7 +45,7 @@ for keyLine in sys.stdin.readlines():
             for keyLine in keyLines:
                 substrate = substrate + base64.decodestring(keyLine)
         except TypeError, why:
-            print '%s, possibly encrypted key' % (why, )
+            print('%s, possibly encrypted key' % (why, ))
             state = stSpam
             continue
 
@@ -53,11 +53,11 @@ for keyLine in sys.stdin.readlines():
 
         if rest: substrate = substrate[:-len(rest)]
         
-        print key.prettyPrint()
+        print(key.prettyPrint())
         
         assert encoder.encode(key) == substrate, 'key re-code fails'
         
         keyCnt = keyCnt + 1
         state = stSpam
 
-print '*** %s private key(s) re/serialized' % keyCnt
+print('*** %s private key(s) re/serialized' % keyCnt)
