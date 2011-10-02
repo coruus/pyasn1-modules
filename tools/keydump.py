@@ -44,8 +44,8 @@ for keyLine in sys.stdin.readlines():
         try:
             for keyLine in keyLines:
                 substrate = substrate + base64.decodestring(keyLine)
-        except TypeError, why:
-            print('%s, possibly encrypted key' % (why, ))
+        except TypeError:
+            print('%s, possibly encrypted key' % (sys.exc_info[1], ))
             state = stSpam
             continue
 
