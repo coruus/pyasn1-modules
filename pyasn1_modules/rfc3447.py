@@ -1,17 +1,12 @@
-from pyasn1.type import univ, namedtype, namedval, constraint
-
-class DSAPrivateKey(univ.Sequence):
-    """PKIX compliant DSA private key structure"""
-    componentType = namedtype.NamedTypes(
-        namedtype.NamedType('version', univ.Integer(namedValues=namedval.NamedValues(('v1', 0)))),
-        namedtype.NamedType('p', univ.Integer()),
-        namedtype.NamedType('q', univ.Integer()),
-        namedtype.NamedType('g', univ.Integer()),
-        namedtype.NamedType('public', univ.Integer()),
-        namedtype.NamedType('private', univ.Integer())
-        )
-
-MAX = 16
+#
+# PKCS#1 syntax
+#
+# ASN.1 source from:
+# ftp://ftp.rsasecurity.com/pub/pkcs/pkcs-1/pkcs-1v2-1.asn
+#
+# Sample captures could be obtained with "openssl genrsa" command
+#
+from pyasn1_modules.rfc2437 import *
 
 class OtherPrimeInfo(univ.Sequence):
     componentType = namedtype.NamedTypes(
@@ -19,14 +14,13 @@ class OtherPrimeInfo(univ.Sequence):
         namedtype.NamedType('exponent', univ.Integer()),
         namedtype.NamedType('coefficient', univ.Integer())
         )
-    
+
 class OtherPrimeInfos(univ.SequenceOf):
     componentType = OtherPrimeInfo()
     subtypeSpec = univ.SequenceOf.subtypeSpec + \
                   constraint.ValueSizeConstraint(1, MAX)
-    
+
 class RSAPrivateKey(univ.Sequence):
-    """PKCS#1 compliant RSA private key structure"""
     componentType = namedtype.NamedTypes(
         namedtype.NamedType('version', univ.Integer(namedValues=namedval.NamedValues(('two-prime', 0), ('multi', 1)))),
         namedtype.NamedType('modulus', univ.Integer()),
@@ -38,5 +32,4 @@ class RSAPrivateKey(univ.Sequence):
         namedtype.NamedType('exponent2', univ.Integer()),
         namedtype.NamedType('coefficient', univ.Integer()),
         namedtype.OptionalNamedType('otherPrimeInfos', OtherPrimeInfos())
-        )
-    
+    )
